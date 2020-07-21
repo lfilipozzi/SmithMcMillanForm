@@ -1,9 +1,17 @@
-function [UL, UR, SMF] = smithMcMillanForm(P, den)
+function [UL, UR, SMF] = smithMcMillanForm(P, den, sVar)
 % SMITHMCMILLANFORM Compute the Smith-McMillan form and return the
 % unimodular matrices UL and UR, such that SMF = UL*Gp*UR, where 
 % Gp = P/den. All matrices are symbolics.
+% 
+% @author Louis Filipozzi
 
-sVar = symvar(P);
+if nargin < 3
+    sVar = symvar(P);
+end
+
+if isempty(sVar)
+    sVar = symvar(tf2sym(tf('s')));
+end
 [UL, UR, SNF] = smithNormalForm(P, sVar);
 SMF = simplify(SNF/den);
 
