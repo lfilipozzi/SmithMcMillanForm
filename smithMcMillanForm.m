@@ -7,10 +7,9 @@ function [UL, UR, SMF] = smithMcMillanForm(P, den, sVar)
 
 if nargin < 3
     sVar = symvar(P);
-end
-
-if isempty(sVar)
-    sVar = symvar(tf2sym(tf('s')));
+    if isempty(sVar)
+        sVar = symvar(tf2sym(tf('s')));
+    end
 end
 [UL, UR, SNF] = smithNormalForm(P, sVar);
 SMF = simplify(SNF/den);
@@ -55,7 +54,7 @@ else
         d = rank(D);
         n = size(HS,1); % size of the square matrix HS
         % Compute the Smith Form of the nonsingular matrix.
-        [ULNS, URNS, SNFNS] = smithForm(D(1:d,1:d));
+        [ULNS, URNS, SNFNS] = smithForm(D(1:d,1:d),sVar);
         % Compute the Smith Form of the upper triangular square matrix HS.
         SNFS = blkdiag(SNFNS,zeros(n-d));
         ULS = simplify(blkdiag(ULNS,eye(n-d)) * ULD);
