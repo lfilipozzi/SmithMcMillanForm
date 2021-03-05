@@ -204,8 +204,12 @@ else
         % Make the pivot monic.
         pivot = Paug(t,jt);
         if ~isequal(pivot, sym(0))
-            poly_tmp = sym2poly(pivot);
-            coef = poly_tmp(1);
+            if has(pivot, sVar)
+                poly_tmp = sym2poly(pivot);
+                coef = poly_tmp(1);
+            else
+                coef = pivot;
+            end
             Paug(:,jt) = Paug(:,jt)/coef;
             Paug = simplify(Paug);
         end
